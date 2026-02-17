@@ -1,50 +1,26 @@
 INSERT INTO
-    users (
-        ID,
-        created_at,
-        updated_at,
-        first_name,
-        last_name,
-        email
-    )
+    users (first_name, last_name, email)
 VALUES
     (
-        1,
-        NOW (),
-        NOW (),
         'Andrea',
         'Capriello',
         'andrea.capriello@example.com'
     );
 
 INSERT INTO
-    users (
-        ID,
-        created_at,
-        updated_at,
-        first_name,
-        last_name,
-        email
-    )
+    users (first_name, last_name, email)
 VALUES
-    (
-        2,
-        NOW (),
-        NOW (),
-        'Mario',
-        'Rossi',
-        'mario.rossi@example.com'
-    );
+    ('Mario', 'Rossi', 'mario.rossi@example.com');
 
 INSERT INTO
-    roles (id, definition)
+    roles (definition)
 VALUES
-    (1, 'admin');
+    ('admin');
 
 INSERT INTO
-    roles (id, definition)
+    roles (definition)
 VALUES
-    (2, 'simply');
+    ('simply');
 
 INSERT INTO
     users_roles (user_ID, role_ID)
