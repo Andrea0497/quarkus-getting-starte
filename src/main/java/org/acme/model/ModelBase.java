@@ -17,8 +17,10 @@ public abstract class ModelBase extends PanacheEntityBase{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     public Long id;
+
     @Column(name = "created_at", updatable = false)
     public LocalDateTime createdAt;
+    
     @Column(name = "updated_at")
     public LocalDateTime updatedAt;
 

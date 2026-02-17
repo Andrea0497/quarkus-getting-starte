@@ -9,8 +9,10 @@ import jakarta.persistence.Table;
 public class User extends ModelBase {
     @Column(name = "first_name")
     public String firstName;
+
     @Column(name = "last_name")
     public String lastName;
+    
     @Column(name = "email")
     public String email;   
 }
