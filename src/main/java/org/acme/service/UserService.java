@@ -3,6 +3,7 @@ package org.acme.service;
 import java.util.List;
 
 import org.acme.dto.UserDTO;
+import org.acme.exception.BusinessException;
 import org.acme.mapper.UserMapper;
 import org.acme.model.User;
 
@@ -30,13 +31,11 @@ public class UserService {
         User user = (User) User.findByIdOptional(id).orElseThrow(NotFoundException::new);
         boolean authenticateUser = authenticateUser(userDTO, user);
         if (!authenticateUser) {
-            //TODO -> CHANGE EXCEPTION
-            throw new RuntimeException("User authentication failed");
+            throw new BusinessException("User authentication failed", 401);
         }
         boolean isEmailAlreadyUsed = isEmailAlreadyUsed(userDTO.email());
         if (isEmailAlreadyUsed) {
-            //TODO -> CHANGE EXCEPTION
-            throw new RuntimeException("Email already used from the same or another user");
+            throw new BusinessException("Email already used from the same or another user", 409);
         }
         userMapper.updateUserFromDTO(userDTO, user);
     }
@@ -45,13 +44,11 @@ public class UserService {
     public void create(UserDTO userDTO) {
         boolean isUserAlreadyPresent = isUserAlreadyPresent(userDTO);
         if (isUserAlreadyPresent) {
-            //TODO -> CHANGE EXCEPTION
-            throw new RuntimeException("User already exists");
+            throw new BusinessException("User already exists", 409);
         }
         boolean isEmailAlreadyUsed = isEmailAlreadyUsed(userDTO.email());
         if (isEmailAlreadyUsed) {
-            //TODO -> CHANGE EXCEPTION
-            throw new RuntimeException("Email already used from another user");
+            throw new BusinessException("Email already used from another user", 409);
         }
         User user = userMapper.toUser(userDTO);
         user.persist();
