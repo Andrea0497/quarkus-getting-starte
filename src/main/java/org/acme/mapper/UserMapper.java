@@ -19,6 +19,9 @@ public interface UserMapper {
     
     List<UserDTO> toUserDTOList(List<User> users);
     
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "firstName", ignore = true)
     @Mapping(target = "lastName", ignore = true)
     void updateUserFromDTO(UserDTO userDTO, @MappingTarget User user);
