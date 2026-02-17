@@ -15,6 +15,7 @@ public interface UserMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "roles", ignore = true)
     User toUser(UserDTO userDTO);
 
     List<UserDTO> toUserDTOList(List<User> users);
@@ -24,5 +25,6 @@ public interface UserMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "firstName", ignore = true)
     @Mapping(target = "lastName", ignore = true)
+    @Mapping(target = "roles", ignore = true)
     void updateUserFromDTO(UserDTO userDTO, @MappingTarget User user);
 }
