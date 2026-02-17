@@ -12,7 +12,7 @@ public class User extends ModelBase {
 
     @Column(name = "last_name")
     public String lastName;
-    
+
     @Column(name = "email")
-    public String email;   
+    public String email;
 }

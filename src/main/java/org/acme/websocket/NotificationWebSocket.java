@@ -26,7 +26,6 @@ public class NotificationWebSocket {
         SESSIONS.remove(connection);
     }
 
-
     public void onUserCreated(@Observes(during = TransactionPhase.AFTER_SUCCESS) UserCreatedEvent event) {
         SESSIONS.forEach(c -> c.sendTextAndAwait(event));
     }

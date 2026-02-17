@@ -12,7 +12,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 
 @MappedSuperclass
-public abstract class ModelBase extends PanacheEntityBase{
+public abstract class ModelBase extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -20,7 +20,7 @@ public abstract class ModelBase extends PanacheEntityBase{
 
     @Column(name = "created_at", updatable = false)
     public LocalDateTime createdAt;
-    
+
     @Column(name = "updated_at")
     public LocalDateTime updatedAt;
 

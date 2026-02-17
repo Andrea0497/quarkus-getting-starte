@@ -66,7 +66,8 @@ public class UserService {
     }
 
     private boolean isUserAlreadyPresent(UserDTO userDTO) {
-        return User.find("firstName = ?1 AND lastName = ?2", userDTO.firstName(), userDTO.lastName()).firstResultOptional().isPresent();
+        return User.find("firstName = ?1 AND lastName = ?2", userDTO.firstName(), userDTO.lastName())
+                .firstResultOptional().isPresent();
     }
 
     private boolean authenticateUser(UserDTO userDTO, User user) {
