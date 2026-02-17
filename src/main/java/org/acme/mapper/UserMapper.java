@@ -11,7 +11,12 @@ import org.mapstruct.MappingTarget;
 @Mapper
 public interface UserMapper {
     UserDTO toUserDTO(User user);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     User toUser(UserDTO userDTO);
+    
     List<UserDTO> toUserDTOList(List<User> users);
     
     @Mapping(target = "firstName", ignore = true)

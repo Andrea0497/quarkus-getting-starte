@@ -6,8 +6,10 @@ import org.acme.dto.UserDTO;
 import org.acme.exception.BusinessException;
 import org.acme.mapper.UserMapper;
 import org.acme.model.User;
+import org.acme.pojo.UserCreatedEvent;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
@@ -16,6 +18,8 @@ import jakarta.ws.rs.NotFoundException;
 public class UserService {
     @Inject
     UserMapper userMapper;
+    @Inject
+    Event<UserCreatedEvent> userCreatedEvent;
 
     public List<UserDTO> listAll() {
         return userMapper.toUserDTOList(User.listAll());
@@ -52,6 +56,7 @@ public class UserService {
         }
         User user = userMapper.toUser(userDTO);
         user.persist();
+        userCreatedEvent.fire(new UserCreatedEvent(userDTO, "User created successfully!"));
     }
 
     @Transactional
