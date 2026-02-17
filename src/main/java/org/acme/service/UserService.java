@@ -28,6 +28,11 @@ public class UserService {
     @Transactional
     public void update(Long id, UserDTO userDTO) {
         User user = (User) User.findByIdOptional(id).orElseThrow(NotFoundException::new);
+        boolean authenticateUser = authenticateUser(userDTO, user);
+        if (!authenticateUser) {
+            //TODO -> CHANGE EXCEPTION
+            throw new RuntimeException("User authentication failed");
+        }
         boolean isEmailAlreadyUsed = isEmailAlreadyUsed(userDTO.email());
         if (isEmailAlreadyUsed) {
             //TODO -> CHANGE EXCEPTION
@@ -59,7 +64,13 @@ public class UserService {
     }
 
     private boolean isUserAlreadyPresent(UserDTO userDTO) {
-        return User.find("first_name = ?1 AND last_name = ?2", userDTO.firstName(), userDTO.lastName()).firstResultOptional().isPresent();
+        return User.find("firstName = ?1 AND lastName = ?2", userDTO.firstName(), userDTO.lastName()).firstResultOptional().isPresent();
+    }
+
+    private boolean authenticateUser(UserDTO userDTO, User user) {
+        boolean hasSameFistName = userDTO.firstName().equalsIgnoreCase(user.firstName) ? true : false;
+        boolean hasSameLastName = userDTO.lastName().equalsIgnoreCase(user.lastName) ? true : false;
+        return hasSameFistName && hasSameLastName;
     }
 
     private boolean isEmailAlreadyUsed(String email) {
