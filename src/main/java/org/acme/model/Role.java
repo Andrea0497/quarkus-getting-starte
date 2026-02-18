@@ -11,8 +11,8 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "roles")
 public class Role extends ModelBase {
-    @Column(name = "definition")
-    public String definition;
+    @Column(name = "description")
+    public String description;
 
     @ManyToMany(mappedBy = "roles")
     public Set<User> users = new HashSet<>();

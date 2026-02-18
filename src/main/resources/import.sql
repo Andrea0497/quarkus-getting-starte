@@ -13,12 +13,12 @@ VALUES
     ('Mario', 'Rossi', 'mario.rossi@example.com');
 
 INSERT INTO
-    roles (definition)
+    roles (description)
 VALUES
     ('admin');
 
 INSERT INTO
-    roles (definition)
+    roles (description)
 VALUES
     ('simply');
 

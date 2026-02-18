@@ -42,6 +42,12 @@ public class UserResource {
         userService.update(id, userDTO);
     }
 
+    @PUT
+    @Path("{userID}/roles/{roleID}")
+    public void linkRoleToUser(@PathParam("userID") Long userId, @PathParam("roleID") Long roleId) {
+        userService.linkRoleToUser(userId, roleId);
+    }
+
     @POST
     public void create(@Valid UserDTO userDTO) {
         userService.create(userDTO);

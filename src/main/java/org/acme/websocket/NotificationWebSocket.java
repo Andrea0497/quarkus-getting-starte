@@ -33,7 +33,7 @@ public class NotificationWebSocket {
             SESSIONS.put(id, connection);
             User.findByIdOptional(Long.valueOf(id)).ifPresent(u -> {
                 User user = (User) u;
-                if (user.roles.stream().anyMatch(r -> ADMIN_ROLE.equals(r.definition))) {
+                if (user.roles.stream().anyMatch(r -> ADMIN_ROLE.equals(r.description))) {
                     ADMIN_SESSIONS.add(connection);
                 }
             });

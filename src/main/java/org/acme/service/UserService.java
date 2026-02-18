@@ -20,6 +20,8 @@ public class UserService {
     UserMapper userMapper;
     @Inject
     Event<UserCreatedEvent> userCreatedEvent;
+    @Inject
+    RoleService roleService;
 
     public List<UserDTO> listAll() {
         return userMapper.toUserDTOList(User.listAll());
@@ -33,25 +35,30 @@ public class UserService {
     @Transactional
     public void update(Long id, UserDTO userDTO) {
         User user = (User) User.findByIdOptional(id).orElseThrow(NotFoundException::new);
-        boolean authenticateUser = authenticateUser(userDTO, user);
-        if (!authenticateUser) {
+        if (!authenticateUser(userDTO, user)) {
             throw new BusinessException("User authentication failed", 401);
         }
-        boolean isEmailAlreadyUsed = isEmailAlreadyUsed(userDTO.email());
-        if (isEmailAlreadyUsed) {
+        if (isEmailAlreadyUsed(userDTO.email())) {
             throw new BusinessException("Email already used from the same or another user", 409);
         }
         userMapper.updateUserFromDTO(userDTO, user);
     }
 
     @Transactional
+    public void linkRoleToUser(Long userId, Long roleId) {
+        User user = (User) User.findByIdOptional(userId).orElseThrow(NotFoundException::new);
+        if (isRoleAlreadyLinked(user, roleId)) {
+            throw new BusinessException("Role already linked to the user", 409);
+        }
+        user.roles.add(roleService.findById(roleId));
+    }
+
+    @Transactional
     public void create(UserDTO userDTO) {
-        boolean isUserAlreadyPresent = isUserAlreadyPresent(userDTO);
-        if (isUserAlreadyPresent) {
+        if (isUserAlreadyPresent(userDTO)) {
             throw new BusinessException("User already exists", 409);
         }
-        boolean isEmailAlreadyUsed = isEmailAlreadyUsed(userDTO.email());
-        if (isEmailAlreadyUsed) {
+        if (isEmailAlreadyUsed(userDTO.email())) {
             throw new BusinessException("Email already used from another user", 409);
         }
         User user = userMapper.toUser(userDTO);
@@ -65,11 +72,6 @@ public class UserService {
         user.delete();
     }
 
-    private boolean isUserAlreadyPresent(UserDTO userDTO) {
-        return User.find("firstName = ?1 AND lastName = ?2", userDTO.firstName(), userDTO.lastName())
-                .firstResultOptional().isPresent();
-    }
-
     private boolean authenticateUser(UserDTO userDTO, User user) {
         boolean hasSameFistName = userDTO.firstName().equalsIgnoreCase(user.firstName) ? true : false;
         boolean hasSameLastName = userDTO.lastName().equalsIgnoreCase(user.lastName) ? true : false;
@@ -78,5 +80,14 @@ public class UserService {
 
     private boolean isEmailAlreadyUsed(String email) {
         return User.find("email = ?1", email).firstResultOptional().isPresent();
+    }
+
+    private boolean isRoleAlreadyLinked(User user, Long roleId) {
+        return user.roles.stream().anyMatch(role -> role.id.equals(roleId));
+    }
+
+    private boolean isUserAlreadyPresent(UserDTO userDTO) {
+        return User.find("firstName = ?1 AND lastName = ?2", userDTO.firstName(), userDTO.lastName())
+                .firstResultOptional().isPresent();
     }
 }
