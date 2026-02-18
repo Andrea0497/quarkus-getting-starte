@@ -11,10 +11,8 @@ public class BusinessExceptionMapper implements ExceptionMapper<BusinessExceptio
 
     @Override
     public Response toResponse(BusinessException e) {
-        ErrorResponse body = new ErrorResponse(e.getMessage());
-        int statusCode = e.getStatusCode();
-        return Response.status(statusCode)
-                .entity(body)
+        return Response.status(e.getStatusCode())
+                .entity(new ErrorResponse(e.getMessage()))
                 .build();
     }
 }

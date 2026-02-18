@@ -3,14 +3,10 @@ package org.acme.mapper;
 import org.acme.dto.RoleDTO;
 import org.acme.model.Role;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface RoleMapper {
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "users", ignore = true)
     Role toRole(RoleDTO roleDTO);
 
     RoleDTO toRoleDTO(Role role);

@@ -14,8 +14,8 @@ import jakarta.ws.rs.Produces;
 
 @Path("/roles")
 @ApplicationScoped
-@Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class RoleResource {
     @Inject
     RoleService roleService;

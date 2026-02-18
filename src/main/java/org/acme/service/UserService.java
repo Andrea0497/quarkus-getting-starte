@@ -12,64 +12,57 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
 public class UserService {
     @Inject
     UserMapper userMapper;
     @Inject
-    Event<UserCreatedEvent> userCreatedEvent;
-    @Inject
     RoleService roleService;
+    @Inject
+    Event<UserCreatedEvent> userCreatedEvent;
 
     public List<UserDTO> listAll() {
         return userMapper.toUserDTOList(User.listAll());
     }
 
     public UserDTO findById(Long id) {
-        User user = (User) User.findByIdOptional(id).orElseThrow(NotFoundException::new);
-        return userMapper.toUserDTO(user);
+        return userMapper.toUserDTO(
+                (User) User.findByIdOptional(id).orElseThrow(() -> new BusinessException("User not found", 404)));
     }
 
     @Transactional
     public void update(Long id, UserDTO userDTO) {
-        User user = (User) User.findByIdOptional(id).orElseThrow(NotFoundException::new);
-        if (!authenticateUser(userDTO, user)) {
+        User user = (User) User.findByIdOptional(id).orElseThrow(() -> new BusinessException("User not found", 404));
+        if (!authenticateUser(userDTO, user))
             throw new BusinessException("User authentication failed", 401);
-        }
-        if (isEmailAlreadyUsed(userDTO.email())) {
+        if (isEmailAlreadyUsed(userDTO.email()))
             throw new BusinessException("Email already used from the same or another user", 409);
-        }
         userMapper.updateUserFromDTO(userDTO, user);
     }
 
     @Transactional
     public void linkRoleToUser(Long userId, Long roleId) {
-        User user = (User) User.findByIdOptional(userId).orElseThrow(NotFoundException::new);
-        if (isRoleAlreadyLinked(user, roleId)) {
+        User user = (User) User.findByIdOptional(userId)
+                .orElseThrow(() -> new BusinessException("User not found", 404));
+        if (isRoleAlreadyLinked(user, roleId))
             throw new BusinessException("Role already linked to the user", 409);
-        }
         user.roles.add(roleService.findById(roleId));
     }
 
     @Transactional
     public void create(UserDTO userDTO) {
-        if (isUserAlreadyPresent(userDTO)) {
+        if (isUserAlreadyPresent(userDTO))
             throw new BusinessException("User already exists", 409);
-        }
-        if (isEmailAlreadyUsed(userDTO.email())) {
+        if (isEmailAlreadyUsed(userDTO.email()))
             throw new BusinessException("Email already used from another user", 409);
-        }
-        User user = userMapper.toUser(userDTO);
-        user.persist();
+        userMapper.toUser(userDTO).persist();
         userCreatedEvent.fire(new UserCreatedEvent(userDTO, "User created successfully!"));
     }
 
     @Transactional
     public void delete(Long id) {
-        User user = (User) User.findByIdOptional(id).orElseThrow(NotFoundException::new);
-        user.delete();
+        User.findByIdOptional(id).orElseThrow(() -> new BusinessException("User not found", 404)).delete();
     }
 
     private boolean authenticateUser(UserDTO userDTO, User user) {

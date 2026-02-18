@@ -8,7 +8,6 @@ import org.acme.model.Role;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
 public class RoleService {
@@ -16,16 +15,14 @@ public class RoleService {
     RoleMapper roleMapper;
 
     public Role findById(Long id) {
-        return (Role) Role.findByIdOptional(id).orElseThrow(NotFoundException::new);
+        return (Role) Role.findByIdOptional(id).orElseThrow(() -> new BusinessException("Role not found", 404));
     }
 
     @Transactional
     public void create(RoleDTO roleDTO) {
-        if (isRoleAlreadyPresent(roleDTO)) {
+        if (isRoleAlreadyPresent(roleDTO))
             throw new BusinessException("Role already exists", 409);
-        }
-        Role role = roleMapper.toRole(roleDTO);
-        role.persist();
+        roleMapper.toRole(roleDTO).persist();
     }
 
     private boolean isRoleAlreadyPresent(RoleDTO roleDTO) {

@@ -9,8 +9,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper(uses = { RoleMapper.class })
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = { RoleMapper.class })
 public interface UserMapper {
     UserDTO toUserDTO(User user);
 
@@ -18,18 +19,12 @@ public interface UserMapper {
     @Mapping(target = "roles", ignore = true)
     UserDTO toUserDTOWithoutRoles(User user);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "roles", ignore = true)
     User toUser(UserDTO userDTO);
 
     @IterableMapping(qualifiedByName = "toUserDTOWithoutRoles")
     List<UserDTO> toUserDTOList(List<User> users);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "firstName", ignore = true)
     @Mapping(target = "lastName", ignore = true)
     @Mapping(target = "roles", ignore = true)
