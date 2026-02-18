@@ -17,12 +17,12 @@ public interface UserMapper {
     UserWRDTO toUserWRDTO(User user);
 
     @Mapping(target = "roles", ignore = true)
-    User toUser(UserDTO userDTO);
+    User toUser(UserWRDTO userWRDTO);
 
     List<UserWRDTO> toUserWRDTOList(List<User> users);
 
     @Mapping(target = "firstName", ignore = true)
     @Mapping(target = "lastName", ignore = true)
     @Mapping(target = "roles", ignore = true)
-    void updateUserFromDTO(UserDTO userDTO, @MappingTarget User user);
+    void updateUserFromUserWRDTO(UserWRDTO userWRDTO, @MappingTarget User user);
 }

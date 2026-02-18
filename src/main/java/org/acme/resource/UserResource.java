@@ -40,8 +40,8 @@ public class UserResource {
 
     @PUT
     @Path("{ID}")
-    public void update(@PathParam("ID") Long id, @Valid UserDTO userDTO) {
-        userService.update(id, userDTO);
+    public void update(@PathParam("ID") Long id, @Valid UserWRDTO userWRDTO) {
+        userService.update(id, userWRDTO);
     }
 
     @PUT
@@ -51,8 +51,8 @@ public class UserResource {
     }
 
     @POST
-    public void create(@Valid UserDTO userDTO) {
-        userService.create(userDTO);
+    public void create(@Valid UserWRDTO userWRDTO) {
+        userService.create(userWRDTO);
     }
 
     @DELETE

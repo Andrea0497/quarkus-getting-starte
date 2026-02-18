@@ -33,13 +33,13 @@ public class UserService {
     }
 
     @Transactional
-    public void update(Long id, UserDTO userDTO) {
+    public void update(Long id, UserWRDTO userWRDTO) {
         User user = (User) User.findByIdOptional(id).orElseThrow(() -> new BusinessException("User not found", 404));
-        if (!authenticateUser(userDTO, user))
+        if (!authenticateUser(userWRDTO, user))
             throw new BusinessException("User authentication failed", 401);
-        if (isEmailAlreadyUsed(userDTO.email()))
+        if (isEmailAlreadyUsed(userWRDTO.email()))
             throw new BusinessException("Email already used from the same or another user", 409);
-        userMapper.updateUserFromDTO(userDTO, user);
+        userMapper.updateUserFromUserWRDTO(userWRDTO, user);
     }
 
     @Transactional
@@ -52,13 +52,13 @@ public class UserService {
     }
 
     @Transactional
-    public void create(UserDTO userDTO) {
-        if (isUserAlreadyPresent(userDTO))
+    public void create(UserWRDTO userWRDTO) {
+        if (isUserAlreadyPresent(userWRDTO))
             throw new BusinessException("User already exists", 409);
-        if (isEmailAlreadyUsed(userDTO.email()))
+        if (isEmailAlreadyUsed(userWRDTO.email()))
             throw new BusinessException("Email already used from another user", 409);
-        userMapper.toUser(userDTO).persist();
-        userCreatedEvent.fire(new UserCreatedEvent(userDTO, "User created successfully!"));
+        userMapper.toUser(userWRDTO).persist();
+        userCreatedEvent.fire(new UserCreatedEvent(userWRDTO, "User created successfully!"));
     }
 
     @Transactional
@@ -66,9 +66,9 @@ public class UserService {
         User.findByIdOptional(id).orElseThrow(() -> new BusinessException("User not found", 404)).delete();
     }
 
-    private boolean authenticateUser(UserDTO userDTO, User user) {
-        boolean hasSameFistName = userDTO.firstName().equalsIgnoreCase(user.firstName) ? true : false;
-        boolean hasSameLastName = userDTO.lastName().equalsIgnoreCase(user.lastName) ? true : false;
+    private boolean authenticateUser(UserWRDTO userWRDTO, User user) {
+        boolean hasSameFistName = userWRDTO.firstName().equalsIgnoreCase(user.firstName) ? true : false;
+        boolean hasSameLastName = userWRDTO.lastName().equalsIgnoreCase(user.lastName) ? true : false;
         return hasSameFistName && hasSameLastName;
     }
 
@@ -80,8 +80,8 @@ public class UserService {
         return user.roles.stream().anyMatch(role -> role.id.equals(roleId));
     }
 
-    private boolean isUserAlreadyPresent(UserDTO userDTO) {
-        return User.find("firstName = ?1 AND lastName = ?2", userDTO.firstName(), userDTO.lastName())
+    private boolean isUserAlreadyPresent(UserWRDTO userWRDTO) {
+        return User.find("firstName = ?1 AND lastName = ?2", userWRDTO.firstName(), userWRDTO.lastName())
                 .firstResultOptional().isPresent();
     }
 }
