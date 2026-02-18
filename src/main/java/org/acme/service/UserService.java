@@ -3,6 +3,7 @@ package org.acme.service;
 import java.util.List;
 
 import org.acme.dto.UserDTO;
+import org.acme.dto.UserWRDTO;
 import org.acme.exception.BusinessException;
 import org.acme.mapper.UserMapper;
 import org.acme.model.User;
@@ -22,8 +23,8 @@ public class UserService {
     @Inject
     Event<UserCreatedEvent> userCreatedEvent;
 
-    public List<UserDTO> listAll() {
-        return userMapper.toUserDTOList(User.listAll());
+    public List<UserWRDTO> listAll() {
+        return userMapper.toUserWRDTOList(User.listAll());
     }
 
     public UserDTO findById(Long id) {
