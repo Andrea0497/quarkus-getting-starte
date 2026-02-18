@@ -20,7 +20,7 @@ VALUES
 INSERT INTO
     roles (description)
 VALUES
-    ('simply');
+    ('secondary');
 
 INSERT INTO
     users_roles (user_ID, role_ID)
