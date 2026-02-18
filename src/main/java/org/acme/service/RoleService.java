@@ -1,5 +1,7 @@
 package org.acme.service;
 
+import java.util.List;
+
 import org.acme.dto.RoleDTO;
 import org.acme.exception.BusinessException;
 import org.acme.mapper.RoleMapper;
@@ -14,6 +16,10 @@ public class RoleService {
     @Inject
     RoleMapper roleMapper;
 
+    public List<RoleDTO> listAll() {
+        return roleMapper.toRoleDTOList(Role.listAll());
+    }
+
     public Role findById(Long id) {
         return (Role) Role.findByIdOptional(id).orElseThrow(() -> new BusinessException("Role not found", 404));
     }
@@ -23,6 +29,11 @@ public class RoleService {
         if (isRoleAlreadyPresent(roleDTO))
             throw new BusinessException("Role already exists", 409);
         roleMapper.toRole(roleDTO).persist();
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        findById(id).delete();
     }
 
     private boolean isRoleAlreadyPresent(RoleDTO roleDTO) {

@@ -1,5 +1,7 @@
 package org.acme.mapper;
 
+import java.util.List;
+
 import org.acme.dto.RoleDTO;
 import org.acme.model.Role;
 import org.mapstruct.Mapper;
@@ -10,4 +12,6 @@ public interface RoleMapper {
     Role toRole(RoleDTO roleDTO);
 
     RoleDTO toRoleDTO(Role role);
+
+    List<RoleDTO> toRoleDTOList(List<Role> roles);
 }
