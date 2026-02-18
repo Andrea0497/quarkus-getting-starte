@@ -1,6 +1,6 @@
 package org.acme.pojo;
 
-import org.acme.dto.UserWRDTO;
+import org.acme.dto.UserWoRDTO;
 
-public record UserCreatedEvent(UserWRDTO userWRDTO, String message) {
+public record UserCreatedEvent(UserWoRDTO userWoRDTO, String message) {
 }

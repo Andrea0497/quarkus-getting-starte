@@ -3,7 +3,7 @@ package org.acme.service;
 import java.util.List;
 
 import org.acme.dto.UserDTO;
-import org.acme.dto.UserWRDTO;
+import org.acme.dto.UserWoRDTO;
 import org.acme.exception.BusinessException;
 import org.acme.mapper.UserMapper;
 import org.acme.model.User;
@@ -23,8 +23,8 @@ public class UserService {
     @Inject
     Event<UserCreatedEvent> userCreatedEvent;
 
-    public List<UserWRDTO> listAll() {
-        return userMapper.toUserWRDTOList(User.listAll());
+    public List<UserWoRDTO> listAll() {
+        return userMapper.toUserWoRDTOList(User.listAll());
     }
 
     public UserDTO findById(Long id) {
@@ -33,13 +33,13 @@ public class UserService {
     }
 
     @Transactional
-    public void update(Long id, UserWRDTO userWRDTO) {
+    public void update(Long id, UserWoRDTO userWoRDTO) {
         User user = (User) User.findByIdOptional(id).orElseThrow(() -> new BusinessException("User not found", 404));
-        if (!authenticateUser(userWRDTO, user))
+        if (!authenticateUser(userWoRDTO, user))
             throw new BusinessException("User authentication failed", 401);
-        if (isEmailAlreadyUsed(userWRDTO.email()))
+        if (isEmailAlreadyUsed(userWoRDTO.email()))
             throw new BusinessException("Email already used from the same or another user", 409);
-        userMapper.updateUserFromUserWRDTO(userWRDTO, user);
+        userMapper.updateUserFromUserWoRDTO(userWoRDTO, user);
     }
 
     @Transactional
@@ -52,13 +52,13 @@ public class UserService {
     }
 
     @Transactional
-    public void create(UserWRDTO userWRDTO) {
-        if (isUserAlreadyPresent(userWRDTO))
+    public void create(UserWoRDTO userWoRDTO) {
+        if (isUserAlreadyPresent(userWoRDTO))
             throw new BusinessException("User already exists", 409);
-        if (isEmailAlreadyUsed(userWRDTO.email()))
+        if (isEmailAlreadyUsed(userWoRDTO.email()))
             throw new BusinessException("Email already used from another user", 409);
-        userMapper.toUser(userWRDTO).persist();
-        userCreatedEvent.fire(new UserCreatedEvent(userWRDTO, "User created successfully!"));
+        userMapper.toUser(userWoRDTO).persist();
+        userCreatedEvent.fire(new UserCreatedEvent(userWoRDTO, "User created successfully!"));
     }
 
     @Transactional
@@ -66,9 +66,9 @@ public class UserService {
         User.findByIdOptional(id).orElseThrow(() -> new BusinessException("User not found", 404)).delete();
     }
 
-    private boolean authenticateUser(UserWRDTO userWRDTO, User user) {
-        boolean hasSameFistName = userWRDTO.firstName().equalsIgnoreCase(user.firstName) ? true : false;
-        boolean hasSameLastName = userWRDTO.lastName().equalsIgnoreCase(user.lastName) ? true : false;
+    private boolean authenticateUser(UserWoRDTO userWoRDTO, User user) {
+        boolean hasSameFistName = userWoRDTO.firstName().equalsIgnoreCase(user.firstName) ? true : false;
+        boolean hasSameLastName = userWoRDTO.lastName().equalsIgnoreCase(user.lastName) ? true : false;
         return hasSameFistName && hasSameLastName;
     }
 
@@ -80,8 +80,8 @@ public class UserService {
         return user.roles.stream().anyMatch(role -> role.id.equals(roleId));
     }
 
-    private boolean isUserAlreadyPresent(UserWRDTO userWRDTO) {
-        return User.find("firstName = ?1 AND lastName = ?2", userWRDTO.firstName(), userWRDTO.lastName())
+    private boolean isUserAlreadyPresent(UserWoRDTO userWoRDTO) {
+        return User.find("firstName = ?1 AND lastName = ?2", userWoRDTO.firstName(), userWoRDTO.lastName())
                 .firstResultOptional().isPresent();
     }
 }

@@ -3,7 +3,7 @@ package org.acme.resource;
 import java.util.List;
 
 import org.acme.dto.UserDTO;
-import org.acme.dto.UserWRDTO;
+import org.acme.dto.UserWoRDTO;
 import org.acme.service.UserService;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -28,7 +28,7 @@ public class UserResource {
     UserService userService;
 
     @GET
-    public List<UserWRDTO> listAll() {
+    public List<UserWoRDTO> listAll() {
         return userService.listAll();
     }
 
@@ -40,8 +40,8 @@ public class UserResource {
 
     @PUT
     @Path("{ID}")
-    public void update(@PathParam("ID") Long id, @Valid UserWRDTO userWRDTO) {
-        userService.update(id, userWRDTO);
+    public void update(@PathParam("ID") Long id, @Valid UserWoRDTO userWoRDTO) {
+        userService.update(id, userWoRDTO);
     }
 
     @PUT
@@ -51,8 +51,8 @@ public class UserResource {
     }
 
     @POST
-    public void create(@Valid UserWRDTO userWRDTO) {
-        userService.create(userWRDTO);
+    public void create(@Valid UserWoRDTO userWoRDTO) {
+        userService.create(userWoRDTO);
     }
 
     @DELETE
