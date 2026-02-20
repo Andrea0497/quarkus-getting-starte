@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.acme.dto.UserDTO;
 import org.acme.dto.UserWoRDTO;
-import org.acme.dto.WebSocketRecord;
+import org.acme.dto.WebSocketDTO;
 import org.acme.exception.BusinessException;
 import org.acme.mapper.UserMapper;
 import org.acme.model.User;
@@ -59,7 +59,7 @@ public class UserService {
             throw new BusinessException("Email already used from another user", 409);
         userMapper.toUser(userWoRDTO).persist();
         notificationWebSocket
-                .sendNotification(new WebSocketRecord<UserWoRDTO>(userWoRDTO, "User created successfully!"));
+                .sendNotification(new WebSocketDTO<UserWoRDTO>(userWoRDTO, "User created successfully!"));
     }
 
     @Transactional

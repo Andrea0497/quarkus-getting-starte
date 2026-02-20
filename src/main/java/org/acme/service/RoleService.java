@@ -3,7 +3,7 @@ package org.acme.service;
 import java.util.List;
 
 import org.acme.dto.RoleDTO;
-import org.acme.dto.WebSocketRecord;
+import org.acme.dto.WebSocketDTO;
 import org.acme.exception.BusinessException;
 import org.acme.mapper.RoleMapper;
 import org.acme.model.Role;
@@ -33,7 +33,7 @@ public class RoleService {
         if (isRoleAlreadyPresent(roleDTO))
             throw new BusinessException("Role already exists", 409);
         roleMapper.toRole(roleDTO).persist();
-        notificationWebSocket.sendNotification(new WebSocketRecord<RoleDTO>(roleDTO, "Role created successfully!"));
+        notificationWebSocket.sendNotification(new WebSocketDTO<RoleDTO>(roleDTO, "Role created successfully!"));
     }
 
     @Transactional

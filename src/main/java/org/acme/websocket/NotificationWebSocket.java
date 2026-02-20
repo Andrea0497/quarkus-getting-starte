@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.acme.dto.WebSocketRecord;
+import org.acme.dto.WebSocketDTO;
 import org.acme.model.User;
 
 import io.quarkus.websockets.next.CloseReason;
@@ -48,7 +48,7 @@ public class NotificationWebSocket {
         ADMIN_SESSIONS.remove(connection);
     }
 
-    public void sendNotification(@Observes(during = TransactionPhase.AFTER_SUCCESS) WebSocketRecord<?> message) {
+    public void sendNotification(@Observes(during = TransactionPhase.AFTER_SUCCESS) WebSocketDTO<?> message) {
         ADMIN_SESSIONS.forEach(c -> c.sendTextAndAwait(message));
     }
 }
