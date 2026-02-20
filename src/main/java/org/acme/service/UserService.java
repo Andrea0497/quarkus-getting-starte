@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.acme.dto.UserDTO;
 import org.acme.dto.UserWoRDTO;
+import org.acme.dto.WebSocketRecord;
 import org.acme.exception.BusinessException;
 import org.acme.mapper.UserMapper;
 import org.acme.model.User;
-import org.acme.pojo.WebSocketRecord;
 import org.acme.websocket.NotificationWebSocket;
 
 import jakarta.enterprise.context.ApplicationScoped;

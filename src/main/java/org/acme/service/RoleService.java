@@ -3,10 +3,10 @@ package org.acme.service;
 import java.util.List;
 
 import org.acme.dto.RoleDTO;
+import org.acme.dto.WebSocketRecord;
 import org.acme.exception.BusinessException;
 import org.acme.mapper.RoleMapper;
 import org.acme.model.Role;
-import org.acme.pojo.WebSocketRecord;
 import org.acme.websocket.NotificationWebSocket;
 
 import jakarta.enterprise.context.ApplicationScoped;
