@@ -7,10 +7,10 @@ import org.acme.dto.UserWoRDTO;
 import org.acme.exception.BusinessException;
 import org.acme.mapper.UserMapper;
 import org.acme.model.User;
-import org.acme.pojo.UserCreatedEvent;
+import org.acme.pojo.WebSocketRecord;
+import org.acme.websocket.NotificationWebSocket;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
@@ -21,7 +21,7 @@ public class UserService {
     @Inject
     RoleService roleService;
     @Inject
-    Event<UserCreatedEvent> userCreatedEvent;
+    NotificationWebSocket notificationWebSocket;
 
     public List<UserWoRDTO> listAll() {
         return userMapper.toUserWoRDTOList(User.listAll());
@@ -58,7 +58,8 @@ public class UserService {
         if (isEmailAlreadyUsed(userWoRDTO.email()))
             throw new BusinessException("Email already used from another user", 409);
         userMapper.toUser(userWoRDTO).persist();
-        userCreatedEvent.fire(new UserCreatedEvent(userWoRDTO, "User created successfully!"));
+        notificationWebSocket
+                .sendNotification(new WebSocketRecord<UserWoRDTO>(userWoRDTO, "User created successfully!"));
     }
 
     @Transactional

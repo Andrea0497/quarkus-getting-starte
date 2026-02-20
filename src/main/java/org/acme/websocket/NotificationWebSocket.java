@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.acme.model.User;
-import org.acme.pojo.UserCreatedEvent;
+import org.acme.pojo.WebSocketRecord;
 
 import io.quarkus.websockets.next.CloseReason;
 import io.quarkus.websockets.next.OnClose;
@@ -48,7 +48,7 @@ public class NotificationWebSocket {
         ADMIN_SESSIONS.remove(connection);
     }
 
-    public void onUserCreated(@Observes(during = TransactionPhase.AFTER_SUCCESS) UserCreatedEvent event) {
-        ADMIN_SESSIONS.forEach(c -> c.sendTextAndAwait(event));
+    public void sendNotification(@Observes(during = TransactionPhase.AFTER_SUCCESS) WebSocketRecord<?> message) {
+        ADMIN_SESSIONS.forEach(c -> c.sendTextAndAwait(message));
     }
 }

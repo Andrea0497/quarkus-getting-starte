@@ -6,6 +6,8 @@ import org.acme.dto.RoleDTO;
 import org.acme.exception.BusinessException;
 import org.acme.mapper.RoleMapper;
 import org.acme.model.Role;
+import org.acme.pojo.WebSocketRecord;
+import org.acme.websocket.NotificationWebSocket;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -15,6 +17,8 @@ import jakarta.transaction.Transactional;
 public class RoleService {
     @Inject
     RoleMapper roleMapper;
+    @Inject
+    NotificationWebSocket notificationWebSocket;
 
     public List<RoleDTO> listAll() {
         return roleMapper.toRoleDTOList(Role.listAll());
@@ -29,6 +33,7 @@ public class RoleService {
         if (isRoleAlreadyPresent(roleDTO))
             throw new BusinessException("Role already exists", 409);
         roleMapper.toRole(roleDTO).persist();
+        notificationWebSocket.sendNotification(new WebSocketRecord<RoleDTO>(roleDTO, "Role created successfully!"));
     }
 
     @Transactional
