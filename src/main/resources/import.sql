@@ -1,41 +1,34 @@
-INSERT INTO
-    users (first_name, last_name, email)
-VALUES
-    (
-        'Andrea',
-        'Capriello',
-        'andrea.capriello@example.com'
-    );
-
-INSERT INTO
-    users (first_name, last_name, email)
-VALUES
-    ('Mario', 'Rossi', 'mario.rossi@example.com');
-
-INSERT INTO
-    roles (description)
-VALUES
-    ('admin');
-
-INSERT INTO
-    roles (description)
-VALUES
-    ('secondary');
-
-INSERT INTO
-    users_roles (user_ID, role_ID)
-VALUES
-    (1, 1);
-
-INSERT INTO
-    users_roles (user_ID, role_ID)
-VALUES
-    (2, 2);
-
-ALTER TABLE users
-ALTER COLUMN id
-RESTART WITH 3;
-
-ALTER TABLE roles
-ALTER COLUMN id
-RESTART WITH 3;
+-- INSERT INTO
+--     users (first_name, last_name, email)
+-- VALUES
+--     (
+--         'Andrea',
+--         'Capriello',
+--         'andrea.capriello@example.com'
+--     );
+-- INSERT INTO
+--     users (first_name, last_name, email)
+-- VALUES
+--     ('Mario', 'Rossi', 'mario.rossi@example.com');
+-- INSERT INTO
+--     roles (description)
+-- VALUES
+--     ('admin');
+-- INSERT INTO
+--     roles (description)
+-- VALUES
+--     ('secondary');
+-- INSERT INTO
+--     users_roles (user_ID, role_ID)
+-- VALUES
+--     (1, 1);
+-- INSERT INTO
+--     users_roles (user_ID, role_ID)
+-- VALUES
+--     (2, 2);
+-- ALTER TABLE users
+-- ALTER COLUMN id
+-- RESTART WITH 3;
+-- ALTER TABLE roles
+-- ALTER COLUMN id
+-- RESTART WITH 3;
