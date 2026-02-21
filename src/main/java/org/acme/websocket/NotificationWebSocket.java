@@ -21,7 +21,7 @@ import jakarta.transaction.Transactional;
 
 @WebSocket(path = "/notifications/{id}")
 public class NotificationWebSocket {
-    private static final String ADMIN_ROLE = "admin";
+    private static final String ADMIN_ROLE = "ADMIN";
     private static final Map<String, WebSocketConnection> SESSIONS = new ConcurrentHashMap<>();
     private static final List<WebSocketConnection> ADMIN_SESSIONS = new CopyOnWriteArrayList<>();
 

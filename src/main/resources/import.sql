@@ -13,7 +13,7 @@
 -- INSERT INTO
 --     roles (description)
 -- VALUES
---     ('admin');
+--     ('ADMIN');
 -- INSERT INTO
 --     roles (description)
 -- VALUES
