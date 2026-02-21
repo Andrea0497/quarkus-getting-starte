@@ -33,20 +33,20 @@ public class UserResource {
     }
 
     @GET
-    @Path("{ID}")
-    public UserDTO findById(@PathParam("ID") Long id) {
+    @Path("{id}")
+    public UserDTO findById(@PathParam("id") Long id) {
         return userService.findById(id);
     }
 
     @PUT
-    @Path("{ID}")
-    public void update(@PathParam("ID") Long id, @Valid UserWoRDTO userWoRDTO) {
+    @Path("{id}")
+    public void update(@PathParam("id") Long id, @Valid UserWoRDTO userWoRDTO) {
         userService.update(id, userWoRDTO);
     }
 
     @PUT
-    @Path("{userID}/roles/{roleID}")
-    public void linkRoleToUser(@PathParam("userID") Long userId, @PathParam("roleID") Long roleId) {
+    @Path("{userId}/roles/{roleId}")
+    public void linkRoleToUser(@PathParam("userId") Long userId, @PathParam("roleId") Long roleId) {
         userService.linkRoleToUser(userId, roleId);
     }
 
@@ -56,8 +56,8 @@ public class UserResource {
     }
 
     @DELETE
-    @Path("{ID}")
-    public void delete(@PathParam("ID") Long id) {
+    @Path("{id}")
+    public void delete(@PathParam("id") Long id) {
         userService.delete(id);
     }
 }

@@ -23,6 +23,6 @@ public class User extends ModelBase {
     public String email;
 
     @ManyToMany
-    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_ID"), inverseJoinColumns = @JoinColumn(name = "role_ID"))
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     public Set<Role> roles = new HashSet<>();
 }

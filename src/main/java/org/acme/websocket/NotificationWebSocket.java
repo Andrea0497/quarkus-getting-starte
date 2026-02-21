@@ -19,7 +19,7 @@ import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.event.TransactionPhase;
 import jakarta.transaction.Transactional;
 
-@WebSocket(path = "/notifications/{ID}")
+@WebSocket(path = "/notifications/{id}")
 public class NotificationWebSocket {
     private static final String ADMIN_ROLE = "admin";
     private static final Map<String, WebSocketConnection> SESSIONS = new ConcurrentHashMap<>();
@@ -28,7 +28,7 @@ public class NotificationWebSocket {
     @OnOpen
     @ActivateRequestContext
     @Transactional
-    public void onOpen(WebSocketConnection connection, @PathParam("ID") String id) {
+    public void onOpen(WebSocketConnection connection, @PathParam("id") String id) {
         try {
             SESSIONS.put(id, connection);
             User.findByIdOptional(Long.valueOf(id)).ifPresent(u -> {
@@ -38,12 +38,12 @@ public class NotificationWebSocket {
                 }
             });
         } catch (NumberFormatException e) {
-            connection.closeAndAwait(new CloseReason(4000, "Invalid User ID format"));
+            connection.closeAndAwait(new CloseReason(4000, "Invalid User id format"));
         }
     }
 
     @OnClose
-    public void onClose(WebSocketConnection connection, @PathParam("ID") String id) {
+    public void onClose(WebSocketConnection connection, @PathParam("id") String id) {
         SESSIONS.remove(id);
         ADMIN_SESSIONS.remove(connection);
     }

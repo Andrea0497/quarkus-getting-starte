@@ -36,8 +36,8 @@ public class RoleResource {
     }
 
     @DELETE
-    @Path("/{ID}")
-    public void delete(@PathParam("ID") Long id) {
+    @Path("/{id}")
+    public void delete(@PathParam("id") Long id) {
         roleService.delete(id);
     }
 }

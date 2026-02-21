@@ -15,7 +15,7 @@ import jakarta.persistence.PreUpdate;
 public abstract class ModelBase extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     public Long id;
 
     @Column(name = "created_at", updatable = false)
